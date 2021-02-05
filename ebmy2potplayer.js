@@ -8,11 +8,10 @@
 // @include       *:8*
 // @run-at      document-start
 // @grant       unsafeWindow
-
 // @require      https://cdn.bootcdn.net/ajax/libs/jquery-url-parser/2.3.1/purl.js
-
 // ==/UserScript==
 
+//脚本会拦截所有播放请求并拉起potplayer，如需web播放请禁用
 
 function timeFilter (seconds) {
         var ss = parseInt(seconds)/10000000
@@ -44,8 +43,6 @@ const originFetch = fetch;
 unsafeWindow.fetch = (...arg) => {
 
     if (arg[0].indexOf('/PlaybackInfo?UserId') > -1 && arg[0].indexOf('IsPlayback=true') > -1) {
-        console.log(purl(arg[0]).attr('path').split("/")[3]);
-        console.log(purl(arg[0]).attr('host'));
 
         embyPot(arg[0])
         return ''
@@ -126,7 +123,6 @@ async function getEmbyMediaUrl(itemInfoUrl) {
             };
         }
     }
-    console.log(MediaSourceId);
 
     let container = itemInfo['MediaSources'][MediaSourceIndex]['Container'];
     let PlaySessionId = itemInfo.PlaySessionId;
@@ -144,7 +140,6 @@ async function getEmbyMediaUrl(itemInfoUrl) {
         }
     }
     let streamUrl = `${domain}/stream.${container}?X-Emby-Token=${api_key}&Static=true&MediaSourceId=${MediaSourceId}&PlaySessionId=${PlaySessionId}`;
-    console.log(streamUrl,subUrl)
     return Array(streamUrl, subUrl);
 }
 
