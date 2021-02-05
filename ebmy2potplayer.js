@@ -64,7 +64,6 @@ async function getItemInfo(itemInfoUrl){
     {
         return await response.json();
     }else{
-        alert("获取视频信息失败,检查api_key是否设置正确  "+response.status+" "+response.statusText);
         throw new Error(response.statusText);
     }
 }
